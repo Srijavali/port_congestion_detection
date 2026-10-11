@@ -1,0 +1,855 @@
+{
+  "dataset": {
+    "synthetic": true,
+    "rows": 800
+  },
+  "split": {
+    "train": [
+      "2024-01-01",
+      "2024-07-04",
+      558
+    ],
+    "validation": [
+      "2024-07-05",
+      "2024-08-13",
+      120
+    ],
+    "test": [
+      "2024-08-14",
+      "2024-09-23",
+      122
+    ],
+    "High_counts": {
+      "train": 29,
+      "validation": 24,
+      "test": 14
+    }
+  },
+  "feature_sets_dropped_columns": {
+    "all": [],
+    "no_calendar": [
+      "month",
+      "day_of_week",
+      "is_weekend",
+      "is_public_holiday"
+    ],
+    "compact": [
+      "month",
+      "day_of_week",
+      "is_weekend",
+      "is_public_holiday",
+      "scheduled_container_vessels",
+      "scheduled_bulk_vessels",
+      "scheduled_tanker_vessels",
+      "scheduled_other_vessels"
+    ]
+  },
+  "targets": {
+    "congestion_level": {
+      "selected": "LR|no_calendar|C=0.05",
+      "threshold": 0.24,
+      "validation_ranking": [
+        {
+          "name": "LR|no_calendar|C=0.05",
+          "val_auc": 0.7833
+        },
+        {
+          "name": "LR|no_calendar|C=0.2",
+          "val_auc": 0.782
+        },
+        {
+          "name": "LR|no_calendar|C=1.0",
+          "val_auc": 0.7729
+        },
+        {
+          "name": "LR|all|C=0.2",
+          "val_auc": 0.7728
+        },
+        {
+          "name": "LR|all|C=0.05",
+          "val_auc": 0.772
+        },
+        {
+          "name": "LR|compact|C=0.05",
+          "val_auc": 0.7669
+        },
+        {
+          "name": "LR|all|C=1.0",
+          "val_auc": 0.7665
+        },
+        {
+          "name": "LR|compact|C=0.2",
+          "val_auc": 0.7655
+        },
+        {
+          "name": "HGB|compact",
+          "val_auc": 0.7537
+        },
+        {
+          "name": "LR|compact|C=1.0",
+          "val_auc": 0.7532
+        },
+        {
+          "name": "HGB|all",
+          "val_auc": 0.7362
+        },
+        {
+          "name": "HGB|no_calendar",
+          "val_auc": 0.7339
+        },
+        {
+          "name": "RF|no_calendar",
+          "val_auc": 0.7182
+        },
+        {
+          "name": "RF|compact",
+          "val_auc": 0.7178
+        },
+        {
+          "name": "RF|all",
+          "val_auc": 0.6759
+        }
+      ],
+      "validation_metrics": {
+        "accuracy": 0.5917,
+        "balanced_accuracy": 0.6127,
+        "macro_f1": 0.5794,
+        "high_recall": 0.75,
+        "high_precision": 0.4615,
+        "n_high": 24,
+        "labels": [
+          "High",
+          "Low",
+          "Moderate"
+        ],
+        "confusion_matrix": [
+          [
+            18,
+            0,
+            6
+          ],
+          [
+            9,
+            35,
+            17
+          ],
+          [
+            12,
+            5,
+            18
+          ]
+        ],
+        "threshold_policy": {
+          "max_validation_false_positive_rate": 0.25,
+          "validation_false_alarm_constraint_met": true,
+          "validation_high_recall_at_threshold": 0.75,
+          "validation_high_precision_at_threshold": 0.4615,
+          "validation_false_positives": 21,
+          "validation_non_high_rows": 96,
+          "validation_false_positive_rate": 0.2188,
+          "selection_policy": "maximize validation High recall subject to maximum validation false-positive rate"
+        }
+      },
+      "test_metrics": {
+        "accuracy": 0.6803,
+        "balanced_accuracy": 0.7281,
+        "macro_f1": 0.6304,
+        "high_recall": 0.9286,
+        "high_precision": 0.3514,
+        "n_high": 14,
+        "labels": [
+          "High",
+          "Low",
+          "Moderate"
+        ],
+        "confusion_matrix": [
+          [
+            13,
+            0,
+            1
+          ],
+          [
+            12,
+            51,
+            12
+          ],
+          [
+            12,
+            2,
+            19
+          ]
+        ],
+        "per_port": {
+          "Mumbai": {
+            "n": 41,
+            "n_high": 7,
+            "high_recall": 1.0,
+            "high_precision": 0.7,
+            "accuracy": 0.732
+          },
+          "Mundra": {
+            "n": 41,
+            "n_high": 2,
+            "high_recall": 1.0,
+            "high_precision": 1.0,
+            "accuracy": 0.927
+          },
+          "Visakhapatnam": {
+            "n": 40,
+            "n_high": 5,
+            "high_recall": 0.8,
+            "high_precision": 0.16,
+            "accuracy": 0.375
+          }
+        },
+        "balanced_accuracy_95ci": [
+          0.638,
+          0.807
+        ],
+        "high_recall_95ci": [
+          0.75,
+          1.0
+        ],
+        "decision_rule": "High if P(High) >= 0.24, else likelier of Low/Moderate",
+        "threshold_policy": {
+          "max_validation_false_positive_rate": 0.25,
+          "validation_false_alarm_constraint_met": true,
+          "validation_high_recall_at_threshold": 0.75,
+          "validation_high_precision_at_threshold": 0.4615,
+          "validation_false_positives": 21,
+          "validation_non_high_rows": 96,
+          "validation_false_positive_rate": 0.2188,
+          "selection_policy": "maximize validation High recall subject to maximum validation false-positive rate"
+        }
+      },
+      "baseline_original_lr_test": {
+        "accuracy": 0.6148,
+        "balanced_accuracy": 0.6046,
+        "macro_f1": 0.5617,
+        "high_recall": 0.5,
+        "high_precision": 0.3684,
+        "n_high": 14,
+        "labels": [
+          "High",
+          "Low",
+          "Moderate"
+        ],
+        "confusion_matrix": [
+          [
+            7,
+            0,
+            7
+          ],
+          [
+            4,
+            44,
+            27
+          ],
+          [
+            8,
+            1,
+            24
+          ]
+        ],
+        "per_port": {
+          "Mumbai": {
+            "n": 41,
+            "n_high": 7,
+            "high_recall": 0.714,
+            "high_precision": 0.714,
+            "accuracy": 0.634
+          },
+          "Mundra": {
+            "n": 41,
+            "n_high": 2,
+            "high_recall": 0.5,
+            "high_precision": 1.0,
+            "accuracy": 0.829
+          },
+          "Visakhapatnam": {
+            "n": 40,
+            "n_high": 5,
+            "high_recall": 0.2,
+            "high_precision": 0.091,
+            "accuracy": 0.375
+          }
+        }
+      },
+      "rolling_cv": {
+        "baseline_LR|all|C=1.0": {
+          "accuracy": 0.5909,
+          "balanced_accuracy": 0.5872,
+          "macro_f1": 0.5559,
+          "high_recall": 0.5,
+          "high_precision": 0.4828,
+          "n_high": 56,
+          "labels": [
+            "High",
+            "Low",
+            "Moderate"
+          ],
+          "confusion_matrix": [
+            [
+              28,
+              0,
+              28
+            ],
+            [
+              11,
+              155,
+              107
+            ],
+            [
+              19,
+              15,
+              77
+            ]
+          ],
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_high": 20,
+              "high_recall": 0.85,
+              "high_precision": 0.708,
+              "accuracy": 0.714
+            },
+            "Mundra": {
+              "n": 147,
+              "n_high": 12,
+              "high_recall": 0.583,
+              "high_precision": 0.583,
+              "accuracy": 0.68
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_high": 24,
+              "high_recall": 0.167,
+              "high_precision": 0.182,
+              "accuracy": 0.377
+            }
+          },
+          "n_rows": 440
+        },
+        "LR|no_calendar|C=0.05 (selected)": {
+          "accuracy": 0.65,
+          "balanced_accuracy": 0.6148,
+          "macro_f1": 0.5907,
+          "high_recall": 0.4643,
+          "high_precision": 0.4815,
+          "n_high": 56,
+          "labels": [
+            "High",
+            "Low",
+            "Moderate"
+          ],
+          "confusion_matrix": [
+            [
+              26,
+              1,
+              29
+            ],
+            [
+              14,
+              180,
+              79
+            ],
+            [
+              14,
+              17,
+              80
+            ]
+          ],
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_high": 20,
+              "high_recall": 0.85,
+              "high_precision": 0.708,
+              "accuracy": 0.762
+            },
+            "Mundra": {
+              "n": 147,
+              "n_high": 12,
+              "high_recall": 0.5,
+              "high_precision": 0.545,
+              "accuracy": 0.769
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_high": 24,
+              "high_recall": 0.125,
+              "high_precision": 0.158,
+              "accuracy": 0.418
+            }
+          },
+          "n_rows": 440
+        },
+        "HGB|compact": {
+          "accuracy": 0.6227,
+          "balanced_accuracy": 0.5124,
+          "macro_f1": 0.5215,
+          "high_recall": 0.3214,
+          "high_precision": 0.5,
+          "n_high": 56,
+          "labels": [
+            "High",
+            "Low",
+            "Moderate"
+          ],
+          "confusion_matrix": [
+            [
+              18,
+              6,
+              32
+            ],
+            [
+              9,
+              204,
+              60
+            ],
+            [
+              9,
+              50,
+              52
+            ]
+          ],
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_high": 20,
+              "high_recall": 0.65,
+              "high_precision": 0.765,
+              "accuracy": 0.707
+            },
+            "Mundra": {
+              "n": 147,
+              "n_high": 12,
+              "high_recall": 0.333,
+              "high_precision": 0.333,
+              "accuracy": 0.707
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_high": 24,
+              "high_recall": 0.042,
+              "high_precision": 0.143,
+              "accuracy": 0.452
+            }
+          },
+          "n_rows": 440
+        },
+        "RF|no_calendar": {
+          "accuracy": 0.6636,
+          "balanced_accuracy": 0.5397,
+          "macro_f1": 0.5491,
+          "high_recall": 0.3214,
+          "high_precision": 0.5,
+          "n_high": 56,
+          "labels": [
+            "High",
+            "Low",
+            "Moderate"
+          ],
+          "confusion_matrix": [
+            [
+              18,
+              6,
+              32
+            ],
+            [
+              8,
+              219,
+              46
+            ],
+            [
+              10,
+              46,
+              55
+            ]
+          ],
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_high": 20,
+              "high_recall": 0.55,
+              "high_precision": 0.688,
+              "accuracy": 0.721
+            },
+            "Mundra": {
+              "n": 147,
+              "n_high": 12,
+              "high_recall": 0.5,
+              "high_precision": 0.5,
+              "accuracy": 0.81
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_high": 24,
+              "high_recall": 0.042,
+              "high_precision": 0.125,
+              "accuracy": 0.459
+            }
+          },
+          "n_rows": 440
+        }
+      }
+    },
+    "shipment_delayed_6h_or_more": {
+      "selected": "LR|no_calendar|C=0.2",
+      "threshold": 0.35,
+      "validation_ranking": [
+        {
+          "name": "LR|no_calendar|C=0.2",
+          "val_auc": 0.885
+        },
+        {
+          "name": "LR|compact|C=0.05",
+          "val_auc": 0.8826
+        },
+        {
+          "name": "LR|no_calendar|C=0.05",
+          "val_auc": 0.8813
+        },
+        {
+          "name": "LR|compact|C=0.2",
+          "val_auc": 0.8797
+        },
+        {
+          "name": "LR|all|C=0.2",
+          "val_auc": 0.8781
+        },
+        {
+          "name": "LR|compact|C=1.0",
+          "val_auc": 0.876
+        },
+        {
+          "name": "LR|all|C=0.05",
+          "val_auc": 0.8756
+        },
+        {
+          "name": "LR|no_calendar|C=1.0",
+          "val_auc": 0.8723
+        },
+        {
+          "name": "LR|all|C=1.0",
+          "val_auc": 0.8662
+        },
+        {
+          "name": "HGB|compact",
+          "val_auc": 0.8134
+        },
+        {
+          "name": "HGB|all",
+          "val_auc": 0.7799
+        },
+        {
+          "name": "HGB|no_calendar",
+          "val_auc": 0.7717
+        },
+        {
+          "name": "RF|compact",
+          "val_auc": 0.7111
+        },
+        {
+          "name": "RF|no_calendar",
+          "val_auc": 0.7021
+        },
+        {
+          "name": "RF|all",
+          "val_auc": 0.6661
+        }
+      ],
+      "validation_metrics": {
+        "accuracy": 0.7417,
+        "balanced_accuracy": 0.7934,
+        "macro_f1": 0.7036,
+        "delay_precision": 0.451,
+        "delay_recall": 0.8846,
+        "n_delayed": 26,
+        "confusion_matrix": [
+          [
+            66,
+            28
+          ],
+          [
+            3,
+            23
+          ]
+        ],
+        "roc_auc": 0.885
+      },
+      "test_metrics": {
+        "accuracy": 0.7377,
+        "balanced_accuracy": 0.7828,
+        "macro_f1": 0.6677,
+        "delay_precision": 0.3696,
+        "delay_recall": 0.85,
+        "n_delayed": 20,
+        "confusion_matrix": [
+          [
+            73,
+            29
+          ],
+          [
+            3,
+            17
+          ]
+        ],
+        "roc_auc": 0.876,
+        "per_port": {
+          "Mumbai": {
+            "n": 41,
+            "n_delayed": 7,
+            "delay_recall": 1.0,
+            "delay_precision": 0.636
+          },
+          "Mundra": {
+            "n": 41,
+            "n_delayed": 4,
+            "delay_recall": 0.5,
+            "delay_precision": 0.4
+          },
+          "Visakhapatnam": {
+            "n": 40,
+            "n_delayed": 9,
+            "delay_recall": 0.889,
+            "delay_precision": 0.267
+          }
+        },
+        "balanced_accuracy_95ci": [
+          0.685,
+          0.869
+        ],
+        "delay_recall_95ci": [
+          0.667,
+          1.0
+        ],
+        "delay_precision_95ci": [
+          0.234,
+          0.514
+        ],
+        "decision_rule": "Delayed if P(delay) >= 0.35",
+        "at_threshold_0.5": {
+          "accuracy": 0.8033,
+          "balanced_accuracy": 0.802,
+          "macro_f1": 0.7219,
+          "delay_precision": 0.4444,
+          "delay_recall": 0.8,
+          "n_delayed": 20,
+          "confusion_matrix": [
+            [
+              82,
+              20
+            ],
+            [
+              4,
+              16
+            ]
+          ],
+          "roc_auc": 0.876
+        }
+      },
+      "baseline_original_lr_test": {
+        "accuracy": 0.8033,
+        "balanced_accuracy": 0.8221,
+        "macro_f1": 0.7286,
+        "delay_precision": 0.4474,
+        "delay_recall": 0.85,
+        "n_delayed": 20,
+        "confusion_matrix": [
+          [
+            81,
+            21
+          ],
+          [
+            3,
+            17
+          ]
+        ],
+        "roc_auc": 0.873,
+        "per_port": {
+          "Mumbai": {
+            "n": 41,
+            "n_delayed": 7,
+            "delay_recall": 1.0,
+            "delay_precision": 0.778
+          },
+          "Mundra": {
+            "n": 41,
+            "n_delayed": 4,
+            "delay_recall": 0.5,
+            "delay_precision": 0.5
+          },
+          "Visakhapatnam": {
+            "n": 40,
+            "n_delayed": 9,
+            "delay_recall": 0.889,
+            "delay_precision": 0.32
+          }
+        }
+      },
+      "rolling_cv": {
+        "baseline_LR|all|C=1.0": {
+          "accuracy": 0.7955,
+          "balanced_accuracy": 0.7986,
+          "macro_f1": 0.7046,
+          "delay_precision": 0.4077,
+          "delay_recall": 0.803,
+          "n_delayed": 66,
+          "confusion_matrix": [
+            [
+              297,
+              77
+            ],
+            [
+              13,
+              53
+            ]
+          ],
+          "roc_auc": 0.8614,
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_delayed": 21,
+              "delay_recall": 0.857,
+              "delay_precision": 0.581
+            },
+            "Mundra": {
+              "n": 147,
+              "n_delayed": 14,
+              "delay_recall": 0.571,
+              "delay_precision": 0.444
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_delayed": 31,
+              "delay_recall": 0.871,
+              "delay_precision": 0.333
+            }
+          },
+          "n_rows": 440
+        },
+        "LR|no_calendar|C=0.2 (selected)": {
+          "accuracy": 0.7955,
+          "balanced_accuracy": 0.7799,
+          "macro_f1": 0.6979,
+          "delay_precision": 0.4032,
+          "delay_recall": 0.7576,
+          "n_delayed": 66,
+          "confusion_matrix": [
+            [
+              300,
+              74
+            ],
+            [
+              16,
+              50
+            ]
+          ],
+          "roc_auc": 0.8885,
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_delayed": 21,
+              "delay_recall": 0.857,
+              "delay_precision": 0.562
+            },
+            "Mundra": {
+              "n": 147,
+              "n_delayed": 14,
+              "delay_recall": 0.5,
+              "delay_precision": 0.438
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_delayed": 31,
+              "delay_recall": 0.806,
+              "delay_precision": 0.329
+            }
+          },
+          "n_rows": 440
+        },
+        "HGB|compact": {
+          "accuracy": 0.8295,
+          "balanced_accuracy": 0.6627,
+          "macro_f1": 0.6637,
+          "delay_precision": 0.4308,
+          "delay_recall": 0.4242,
+          "n_delayed": 66,
+          "confusion_matrix": [
+            [
+              337,
+              37
+            ],
+            [
+              38,
+              28
+            ]
+          ],
+          "roc_auc": 0.8281,
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_delayed": 21,
+              "delay_recall": 0.667,
+              "delay_precision": 0.636
+            },
+            "Mundra": {
+              "n": 147,
+              "n_delayed": 14,
+              "delay_recall": 0.429,
+              "delay_precision": 0.429
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_delayed": 31,
+              "delay_recall": 0.258,
+              "delay_precision": 0.276
+            }
+          },
+          "n_rows": 440
+        },
+        "RF|compact": {
+          "accuracy": 0.85,
+          "balanced_accuracy": 0.6061,
+          "macro_f1": 0.6277,
+          "delay_precision": 0.5,
+          "delay_recall": 0.2576,
+          "n_delayed": 66,
+          "confusion_matrix": [
+            [
+              357,
+              17
+            ],
+            [
+              49,
+              17
+            ]
+          ],
+          "roc_auc": 0.8305,
+          "per_port": {
+            "Mumbai": {
+              "n": 147,
+              "n_delayed": 21,
+              "delay_recall": 0.476,
+              "delay_precision": 0.714
+            },
+            "Mundra": {
+              "n": 147,
+              "n_delayed": 14,
+              "delay_recall": 0.429,
+              "delay_precision": 0.545
+            },
+            "Visakhapatnam": {
+              "n": 146,
+              "n_delayed": 31,
+              "delay_recall": 0.032,
+              "delay_precision": 0.111
+            }
+          },
+          "n_rows": 440
+        }
+      }
+    }
+  }
+}

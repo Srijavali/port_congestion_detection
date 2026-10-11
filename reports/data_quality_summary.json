@@ -1,0 +1,42 @@
+{
+  "shape": [
+    800,
+    31
+  ],
+  "missing_values": {
+    "wind_speed_forecast_knots": 8,
+    "wave_height_forecast_m": 6,
+    "rainfall_forecast_mm": 12,
+    "weather_severity_forecast": 11,
+    "labor_availability_pct": 5,
+    "equipment_availability_pct": 12,
+    "customs_processing_pressure_index": 13
+  },
+  "duplicate_rows": 0,
+  "congestion_counts": {
+    "Low": 570,
+    "Moderate": 163,
+    "High": 67
+  },
+  "delay_counts": {
+    "0": 721,
+    "1": 79
+  },
+  "congestion_summary": {
+    "observed_queue_length_vessels": {
+      "High": 12.254,
+      "Low": 0.656,
+      "Moderate": 2.847
+    },
+    "observed_waiting_time_hours": {
+      "High": 17.896,
+      "Low": 1.626,
+      "Moderate": 4.852
+    },
+    "observed_shipment_delay_hours": {
+      "High": 16.319,
+      "Low": 0.855,
+      "Moderate": 3.874
+    }
+  }
+}
