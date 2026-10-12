@@ -9,7 +9,7 @@ import requests
 import streamlit as st
 
 from datetime import date, timedelta
-
+prediction_date = date.today() + timedelta(days=1)
 # ============================================================
 
 # CONFIGURATION
@@ -138,9 +138,9 @@ if reference_data is None:
 
 # ============================================================
 
-@st.cache_data(ttl=1800, show_spinner=False)
-
-def fetch_port_weather(port_name):
+# Intentionally not cached: Streamlit would cache returned error dictionaries too,
+# which could keep a temporary 503 visible for the full cache TTL.
+def fetch_port_weather(port_name, prediction_date):
 
     """
 
@@ -180,7 +180,7 @@ def fetch_port_weather(port_name):
 
         ),
 
-        "forecast_days": 2,
+        "forecast_days": 3,
 
         "timezone": "Asia/Kolkata",
 
@@ -216,19 +216,21 @@ def fetch_port_weather(port_name):
 
             return {"error": "The weather API returned incomplete data."}
 
-        # Keep only forecast hours from the current local date/time onward.
+        # Keep only forecast hours for the prediction date.
+        target_start = pd.Timestamp(prediction_date)
+        target_end = target_start + pd.Timedelta(days=1)
 
-        now = pd.Timestamp.now(tz="Asia/Kolkata").tz_localize(None)
+        parsed_times = pd.to_datetime(
+            pd.Series(times), errors="coerce"
+        )
 
-        parsed_times = pd.to_datetime(pd.Series(times), errors="coerce")
-
-        mask = parsed_times.ge(now) & parsed_times.lt(
-
-            now + pd.Timedelta(hours=24)
-
+        mask = (
+            parsed_times.ge(target_start)
+            & parsed_times.lt(target_end)
         )
 
         indices = mask[mask].index.tolist()
+
 
         if not indices:
 
@@ -316,29 +318,23 @@ def fetch_port_weather(port_name):
 
             marine_waves = marine_hourly.get("wave_height", [])
 
+            
             marine_parsed = pd.to_datetime(
-
                 pd.Series(marine_times), errors="coerce"
-
             )
 
-            marine_mask = marine_parsed.ge(now) & marine_parsed.lt(
-
-                now + pd.Timedelta(hours=24)
-
+            marine_mask = (
+                marine_parsed.ge(target_start)
+                & marine_parsed.lt(target_end)
             )
 
             wave_values = [
-
                 float(marine_waves[i])
-
                 for i in marine_mask[marine_mask].index.tolist()
-
                 if i < len(marine_waves)
-
                 and marine_waves[i] is not None
-
             ]
+
 
             if wave_values:
 
@@ -609,7 +605,12 @@ with st.sidebar:
 
     with st.spinner("Fetching the latest forecast..."):
 
-        weather = fetch_port_weather(selected_port)
+        
+        weather = fetch_port_weather(
+            selected_port,
+            prediction_date,
+        )
+
 
     if "error" in weather:
 
@@ -731,23 +732,20 @@ st.write(
 
 )
 
+
 today = date.today()
+prediction_date = today + timedelta(days=1)
+
+st.caption(
+    f"Prediction horizon: Tomorrow, "
+    f"{prediction_date.strftime('%d %B %Y')}"
+)
 
 with st.form("operational_inputs"):
 
     left, middle, right = st.columns(3)
 
     with left:
-
-        prediction_date = st.date_input(
-
-            "Prediction date",
-
-            value=today + timedelta(days=1),
-
-            min_value=today,
-
-        )
 
         scheduled_arrivals = st.number_input(
 
